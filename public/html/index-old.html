@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plant Monitor</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="/public/css/style.css"/>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+
+    <!-- Client Functionality -->
+    <script src="/public/js/index.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="title">Plant Monitor</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="element reading" id="temperature-reading">72.3</div>
+            <div class="element reading-label" id="temperature-label"> &degF</div>
+            <div class="description" id="temperature-info">
+                <h1>Good Average Temperature</h1>
+                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
+                Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
+                good old Sheev P says so.</p>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <canvas id="temperature-chart" height="55"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="element reading" id="light-reading">High</div>
+            <div class="element reading-label" id="light-label"> Light</div>
+            <div class="description" id="light-info">
+                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
+                Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
+                good old Sheev P says so.</p>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <canvas id="light-chart" height="55"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="element reading" id="moisture-reading">Low</div>
+            <div class="element reading-label" id="moisture-label">Moisture</div>
+            <div class="description" id="moisture-info">
+                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
+                Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
+                good old Sheev P says so.</p>
+                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
+                    Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
+                    good old Sheev P says so.</p>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <canvas id="moisture-chart" height="55"></canvas>
+        </div>
+    </div>
+</div>
+</body>
+</html>

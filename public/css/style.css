@@ -1,0 +1,80 @@
+#title {
+  color: #3ddb93;
+  font: 70px "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.reading {
+  font: 50px "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
+  border-radius: 13px;
+  text-align: center;
+  background-color: #3ddb93;
+  color: #ffffff;
+  transition: all 0.5s linear;
+}
+
+.reading-bad {
+  font: 50px "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
+  border-radius: 13px;
+  text-align: center;
+  background-color: #db4482;
+  color: #ffffff;
+  transition: all 0.5s linear;
+}
+
+.reading-label {
+  color: #3ddb93;
+  font: 50px "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  text-align: left;
+}
+
+.reading-label-bad {
+  color: #db4482;
+  font: 50px "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  text-align: left;
+}
+
+.element {
+  display: inline-block;
+}
+
+.chart {
+  width: 300px;
+  height: 100px;
+}
+
+.description p {
+  color: #898989;
+  font: 15px "Open Sans", Helvetica, Arial, sans-serif;
+  text-align: justify;
+}
+
+.description h1 {
+  color: #898989;
+  font: 20px "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  text-align: left;
+}
+
+.row {
+  margin-bottom: 50px;
+}
+
+.good-highlight {
+  color: #3ddb93;
+}
+
+.bad-highlight {
+  color: #db4482;
+}
