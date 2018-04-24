@@ -1,21 +1,13 @@
 
-const SensorDataSet = require('mongo.js');
+const SensorDataSet = require('./mongo');
 
 const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
-const ACCUMULATION_PERIOD = SECONDS_IN_MINUTE * MINUTES_IN_HOUR * 1000;
+const ACCUMULATION_PERIOD = 10000; //SECONDS_IN_MINUTE * MINUTES_IN_HOUR * 1000;
 const NUM_VALUES = 24;
 
-
-function query(select, callback) {
-    SensorDataSet.find({}, select, (err, entries) => {
-        if (err) {
-            console.log(err);
-            callback([]);
-        } else {
-            callback(entries);
-        }
-    });
+function calculateAccumulationPeriod() {
+    return ACCUMULATION_PERIOD - (Date.now() % ACCUMULATION_PERIOD);
 }
 
 module.exports = {
@@ -24,7 +16,16 @@ module.exports = {
      * @param callback The function to call with the values.
      */
     getCurrentValues: callback => {
-        query('name currentValue', callback)
+        SensorDataSet.find({}, 'name currentValue', (err, entries) => {
+            if (err) {
+                console.log(err);
+            }
+            const data = {};
+            for (let i = 0; i < entries.length; i++) {
+                data[entries[i].name] = entries[i].currentValue;
+            }
+            callback(data);
+        });
     },
 
     /**
@@ -33,7 +34,16 @@ module.exports = {
      * @param callback The function to call with the results.
      */
     getTimeLastModified: callback => {
-        query('name timeValuesLastModified', callback)
+        SensorDataSet.find({}, 'name timeValuesLastModified', (err, entries) => {
+            if (err) {
+                console.log(err);
+            }
+            let max = 0;
+            for (let i = 0; i < entries.length; i++) {
+                max = Math.max(max, entries[i].timeValuesLastModified);
+            }
+            callback({lastModified: max});
+        });
     },
 
     /**
@@ -55,6 +65,7 @@ module.exports = {
         let status = 200;
         for (const name in values) {
             if (values.hasOwnProperty(name)) {
+                const newValue = values[name];
                 // get current data to update
                 SensorDataSet.findOne(
                     {name: name},
@@ -68,36 +79,45 @@ module.exports = {
 
                         // if the entry already exists (usual case)
                         if (data) {
-
-                            // update current values
-                            data.currentValue = values[name];
-                            data.timeCurrentValueLastUpdated = currentTime;
-
                             // update average
                             const duration = currentTime - data.timeCurrentValueLastUpdated;
                             data.accumulator = data.accumulator + duration * data.currentValue;
 
+                            // update current values
+                            data.currentValue = newValue;
+                            data.timeCurrentValueLastUpdated = currentTime;
+
                             // if the accumulation period is over, store a new value
                             const totalDuration = currentTime - data.timeAccumulatorStart;
-                            const values = data.values;
                             if (totalDuration >= data.accumulationPeriod) {
 
-                                // calculate final average
-                                const average = data.accumulator / totalDuration;
+                                console.log('Seconds since last update: ---------------------' +
+                                    '' + totalDuration / 1000);
 
-                                // remove oldest value if needed
-                                if (values.length >= NUM_VALUES) {
-                                    values.pop();
+
+                                // correct for missed intervals (so we don't misplace a time label)
+                                for (let i = 1; i < Math.floor(totalDuration / ACCUMULATION_PERIOD); i++) {
+                                    data.values.push(null);
                                 }
 
-                                // add new value and reset times
-                                values.push(average);
+
+                                // calculate final average and add
+                                const average = data.accumulator / totalDuration;
+                                data.values.push(average);
+
+                                // remove oldest value if needed
+                                while (data.values.length > NUM_VALUES) {
+                                    data.values.shift();
+                                }
+
+
+                                // reset times
                                 data.accumulator = 0;
                                 data.timeValuesLastModified = currentTime;
                                 data.timeAccumulatorStart = currentTime;
 
                                 // adjust accumulation period for next cycle if we went over
-                                data.accumulationPeriod = 2 * ACCUMULATION_PERIOD - totalDuration;
+                                data.accumulationPeriod = calculateAccumulationPeriod();
                             }
 
                             // save updated document
@@ -111,8 +131,9 @@ module.exports = {
                             const sensorDataSet = new SensorDataSet({
                                 name: name,
                                 currentValue: values[name],
+                                ranges: [45, 60, 75, 90],
                                 values: [],
-                                accumulationPeriod: ACCUMULATION_PERIOD - (Date.now() % ACCUMULATION_PERIOD),
+                                accumulationPeriod: calculateAccumulationPeriod(),
                                 accumulator: 0,
                                 timeAccumulatorStart: currentTime,
                                 timeCurrentValueLastUpdated: currentTime,

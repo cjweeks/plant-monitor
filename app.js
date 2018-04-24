@@ -16,7 +16,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/api', apiRouter);
-app.use('/', (req, res, next) => {
+app.use('/details', (req, res, next) => {
+    const file = __dirname + '/public/html/details.html';
+    res.sendFile(file);
+});
+app.get('/', (req, res, next) => {
     const file = __dirname + '/public/html/index.html';
     res.sendFile(file);
 });

@@ -1,8 +1,11 @@
 
 $main-color: #3ddb93
+$main-color-light: #e2fff3
+
 $bad-color: #db4482
 $reading-color: #ffffff
 $text-color: #898989
+
 
 #title
   color: $main-color
@@ -65,7 +68,7 @@ $text-color: #898989
   text-align: left
 
 .row
-  margin-bottom: 50px
+  margin-bottom: 20px
 
 .good-highlight
   color: $main-color
@@ -73,4 +76,31 @@ $text-color: #898989
 .bad-highlight
   color: $bad-color
 
+#nav-buttons
+  margin: auto
 
+#nav-buttons .btn-nav
+  color: $main-color
+  background: none
+  border: 1px solid $main-color
+
+#nav-buttons .active
+  background-color: $main-color
+  color: white
+
+#nav-buttons .btn-nav:hover
+  background-color: $main-color-light
+
+#nav-buttons .btn-nav.active:hover
+  background-color: $main-color
+
+#error-message
+  color: $main-color
+  font: 50px 'Open Sans', Helvetica, Arial, sans-serif
+  font-weight: 300
+  margin-top: 20px
+  text-align: center
+
+
+#start-row
+  margin-top: 55px

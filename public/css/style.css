@@ -68,7 +68,7 @@
 }
 
 .row {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .good-highlight {
@@ -77,4 +77,39 @@
 
 .bad-highlight {
   color: #db4482;
+}
+
+#nav-buttons {
+  margin: auto;
+}
+
+#nav-buttons .btn-nav {
+  color: #3ddb93;
+  background: none;
+  border: 1px solid #3ddb93;
+}
+
+#nav-buttons .active {
+  background-color: #3ddb93;
+  color: white;
+}
+
+#nav-buttons .btn-nav:hover {
+  background-color: #e2fff3;
+}
+
+#nav-buttons .btn-nav.active:hover {
+  background-color: #3ddb93;
+}
+
+#error-message {
+  color: #3ddb93;
+  font: 50px "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#start-row {
+  margin-top: 55px;
 }

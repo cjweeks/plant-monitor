@@ -11,9 +11,7 @@
     <link rel="stylesheet" href="/public/css/style.css"/>
 
     <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -31,6 +29,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 
     <!-- Client Functionality -->
+    <script src="/public/js/common.js"></script>
     <script src="/public/js/index.js"></script>
 </head>
 <body>
@@ -39,62 +38,44 @@
         <div id="title">Plant Monitor</div>
     </div>
     <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-3">
+        <div id="nav-buttons" class="btn-group" role="group" aria-label="Basic example">
+            <a href="/" class="btn btn-nav active">Home</a>
+            <a href="/details" class="btn btn-nav">Details</a>
+            <a href="/settings" class="btn btn-nav">Settings</a>
+        </div>
+    </div>
+    <div class="row" id="start-row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
             <div class="element reading" id="temperature-reading">72.3</div>
             <div class="element reading-label" id="temperature-label"> &degF</div>
-            <div class="description" id="temperature-info">
-                <h1><span class="good-highlight">Good</span> Average Temperature</h1>
-                <p>
-                    This text area will provide information about the above parameter and its average value.
-                    Suggestions will be made, allowing the user to improve their plant's environment. This section
-                    will also show some <b>numerical data</b> regarding current averages and recommended values.
-                </p>
+            <div class="description">
+                <h1><span id="temperature-heading" class="good-highlight">Good</span> Average Temperature</h1>
+                <p id="temperature-info"></p>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-lg-3">
             <div class="element reading" id="light-reading">High</div>
             <div class="element reading-label" id="light-label"> Light</div>
-            <div class="description" id="light-info">
-                <h1><span class="good-highlight">Good</span> Average Light</h1>
-                <p>
-                    This text area will provide information about the above parameter and its average value.
-                    Suggestions will be made, allowing the user to improve their plant's environment. This section
-                    will also show some <b>numerical data</b> regarding current averages and recommended values.
-                </p>
+            <div class="description">
+                <h1><span id="light-heading" class="good-highlight">Good</span> Average Light</h1>
+                <p id="light-info"></p>
             </div>
         </div>
-        <div class="col-sm-3"></div>
+        <div class="col-lg-3"></div>
 
     </div>
     <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-3">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
             <div class="element reading-bad" id="moisture-reading">Low</div>
             <div class="element reading-label-bad" id="moisture-label">Moisture</div>
-            <div class="description" id="moisture-info">
-                <h1><span class="bad-highlight">Low</span> Average Moisture</h1>
-                <p>
-                    This text area will provide information about the above parameter and its average value.
-                    Suggestions will be made, allowing the user to improve their plant's environment. This section
-                    will also show some <b>numerical data</b> regarding current averages and recommended values.
-                </p>
+            <div class="description">
+                <h1><span id="moisture-heading" class="bad-highlight">Low</span> Average Moisture</h1>
+                <p id="moisture-info"></p>
             </div>
         </div>
-
-        <div class="col-sm-3">
-            <div class="element reading" id="humidity-reading">25%</div>
-            <div class="element reading-label" id="humidity-label">Humidity</div>
-            <div class="description" id="humidity-info">
-                <h1><span class="good-highlight">Good</span> Average Humidity</h1>
-                <p>
-                    This text area will provide information about the above parameter and its average value.
-                    Suggestions will be made, allowing the user to improve their plant's environment. This section
-                    will also show some <b>numerical data</b> regarding current averages and recommended values.
-                </p>
-            </div>
-        </div>
-        <div class="col-sm-3"></div>
+        <div class="col-lg-3"></div>
     </div>
 </div>
 </body>

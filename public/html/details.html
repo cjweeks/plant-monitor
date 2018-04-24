@@ -11,9 +11,8 @@
     <link rel="stylesheet" href="/public/css/style.css"/>
 
     <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -31,7 +30,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 
     <!-- Client Functionality -->
-    <script src="/public/js/index.js"></script>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/details.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -39,14 +39,19 @@
         <div id="title">Plant Monitor</div>
     </div>
     <div class="row">
+        <div id="nav-buttons" class="btn-group" role="group" aria-label="Basic example">
+            <a href="/" class="btn btn-nav">Home</a>
+            <a href="/details" class="btn btn-nav active">Details</a>
+            <a href="/settings" class="btn btn-nav">Settings</a>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-4">
             <div class="element reading" id="temperature-reading">72.3</div>
             <div class="element reading-label" id="temperature-label"> &degF</div>
-            <div class="description" id="temperature-info">
+            <div class="description">
                 <h1>Good Average Temperature</h1>
-                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
-                Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
-                good old Sheev P says so.</p>
+                <p id="temperature-info"></p>
             </div>
         </div>
         <div class="col-sm-8">
@@ -57,10 +62,8 @@
         <div class="col-sm-4">
             <div class="element reading" id="light-reading">High</div>
             <div class="element reading-label" id="light-label"> Light</div>
-            <div class="description" id="light-info">
-                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
-                Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
-                good old Sheev P says so.</p>
+            <div class="description">
+                <p id="light-info"></p>
             </div>
         </div>
         <div class="col-sm-8">
@@ -71,13 +74,8 @@
         <div class="col-sm-4">
             <div class="element reading" id="moisture-reading">Low</div>
             <div class="element reading-label" id="moisture-label">Moisture</div>
-            <div class="description" id="moisture-info">
-                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
-                Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
-                good old Sheev P says so.</p>
-                <p>Don't forget to not kill your plant, as this is very important for the plant to be alive.
-                    Dead plants are not alive, despite what you might read. Also, you should <b>do it</b> because
-                    good old Sheev P says so.</p>
+            <div class="description">
+                <p id="moisture-info"></p>
             </div>
         </div>
         <div class="col-sm-8">
