@@ -1,3 +1,4 @@
+
 /**
  * Time in milliseconds between data refreshes.
  * @type {number}
@@ -10,36 +11,52 @@ var REFRESH_TIME = 1000;
  */
 var NAMES = ['temperature', 'light', 'moisture'];
 
-var CLASSES = ['reading-bad', 'reading-slightly', 'reading-good', 'reading-slightly', 'reading-bad'];
+var FORMATS = {
+    temperature: {
+        precision: 1,
+        percent: false
+    },
+    light: {
+        precision: 0,
+        percent: true
+    },
+    moisture: {
+        precision: 0,
+        percent: true
+    }
+};
+
+var CLASS_PREFIXES = ['bad', 'slightly', 'good', 'slightly', 'bad'];
 
 var TEMPERATURE_COMMON_TEXT = [
-    'The average daily temperature around your plant is {0}°F.',
-    'The minimum and maximum temperatures in the past 24 hours were {1}°F and {2}°F, respectively.'
+    'The average daily temperature around your plant is <b>{0}°F</b>.',
+    'The minimum and maximum temperatures in the past 24 hours were <b>{1}°F</b> and <b>{2}°F</b>, respectively.'
 ];
 
 var LIGHT_COMMON_TEXT = [
-    'The average daily amount of light around your plant is {0}%. Here, 0% indicates ' +
+    'The average daily amount of light around your plant is <b>{0}</b>%. Here, 0% indicates ' +
     'total darkness, and 100% indicates very direct light.',
-    'The minimum and maximum amounts of light in the past 24 hours were {1}% and {2}%, respectively.'
+    'The minimum and maximum amounts of light in the past 24 hours were <b>{1}%</b> and <b>{2}%</b>, respectively.'
 ];
 
 var MOISTURE_COMMON_TEXT = [
-    'The average daily moisture of your plant\'s soil is {0}%. Here, 0% indicates ' +
+    'The average daily moisture of your plant\'s soil is <b>{0}</b>%. Here, 0% indicates ' +
     'totally dry soil, and 100% indicates completely saturated soil.',
-    'The minimum and maximum moisture values in the past 24 hours were {1}% and {2}%, respectively.'
+    'The minimum and maximum moisture values in the past 24 hours were <b>{1}%</b> and <b>{2}%</b>, respectively.'
 ];
 
 var LABELS = ['Low', 'Slightly Low', 'Good', 'Slightly High'];
+
 var TEXT = {
     temperature: [
         TEMPERATURE_COMMON_TEXT[0] +
-        ' This amount is low, and you should consider moving your plant to a ' +
-        'location with a higher average temperature. ' +
+        ' This amount is low, and you should <b>consider moving your plant to a ' +
+        'location with a higher average temperature.</b> ' +
         TEMPERATURE_COMMON_TEXT[1],
 
         TEMPERATURE_COMMON_TEXT[0] +
-        ' This amount acceptable but low. You may want to consider moving your plant to a ' +
-        'location with a higher average temperature. ' +
+        ' This amount acceptable but low. You may want to <b>consider moving your plant to a ' +
+        'location with a higher average temperature.</b> ' +
         TEMPERATURE_COMMON_TEXT[1],
 
         TEMPERATURE_COMMON_TEXT[0] +
@@ -47,22 +64,23 @@ var TEXT = {
         TEMPERATURE_COMMON_TEXT[1],
 
         TEMPERATURE_COMMON_TEXT[0] +
-        ' This amount acceptable but high. You may want to consider moving your plant to a ' +
-        'location with a lower average temperature. ' +
+        ' This amount acceptable but high. You may want to <b>consider moving your plant to a ' +
+        'location with a lower average temperature.</b> ' +
         TEMPERATURE_COMMON_TEXT[1],
 
         TEMPERATURE_COMMON_TEXT[0] +
-        ' This amount is high, and you should consider moving your plant to a ' +
-        'location a lower average temperature. ' +
+        ' This amount is high, and you should <b>consider moving your plant to a ' +
+        'location a lower average temperature.</b> ' +
         TEMPERATURE_COMMON_TEXT[1],
     ],
     light: [
         LIGHT_COMMON_TEXT[0] +
-        ' This amount is low, and you should consider moving your plant to a location with more light. ' +
+        ' This amount is low, and you should <b>consider moving your plant to a location with more light.</b> ' +
         LIGHT_COMMON_TEXT[1],
 
         LIGHT_COMMON_TEXT[0] +
-        ' This amount acceptable but low. You may want to consider moving your plant to a location with more light. ' +
+        ' This amount acceptable but low. You may want to <b>consider moving your plant ' +
+        'to a location with more light.</b> ' +
         LIGHT_COMMON_TEXT[1],
 
         LIGHT_COMMON_TEXT[0] +
@@ -70,20 +88,21 @@ var TEXT = {
         LIGHT_COMMON_TEXT[1],
 
         LIGHT_COMMON_TEXT[0] +
-        ' This amount acceptable but high. You may want to consider moving your plant to a location with less light. ' +
+        ' This amount acceptable but high. You may want to <b>consider moving your plant ' +
+        'to a location with less light.</b> ' +
         LIGHT_COMMON_TEXT[1],
 
         LIGHT_COMMON_TEXT[0] +
-        ' This amount is high, and you should consider moving your plant to a location with less light. ' +
+        ' This amount is high, and you should <b>consider moving your plant to a location with less light.</b> ' +
         LIGHT_COMMON_TEXT[1]
     ],
     moisture: [
         MOISTURE_COMMON_TEXT[0] +
-        ' This amount is low, and you should consider watering your plant more often. ' +
+        ' This amount is low, and you should <b>consider watering your plant more often.</b> ' +
         MOISTURE_COMMON_TEXT[1],
 
         MOISTURE_COMMON_TEXT[0] +
-        ' This amount acceptable but low. You may want to consider watering your plant more often. ' +
+        ' This amount acceptable but low. You may want to <b>consider watering your plant more often.</b> ' +
         MOISTURE_COMMON_TEXT[1],
 
         MOISTURE_COMMON_TEXT[0] +
@@ -91,17 +110,16 @@ var TEXT = {
         MOISTURE_COMMON_TEXT[1],
 
         MOISTURE_COMMON_TEXT[0] +
-        ' This amount acceptable but high. You may want to consider watering your plant less often. ' +
+        ' This amount acceptable but high. You may want to <b>consider watering your plant less often.</b> ' +
         MOISTURE_COMMON_TEXT[1],
 
         MOISTURE_COMMON_TEXT[0] +
-        ' This amount is high, and you should consider watering your plant less often. ' +
+        ' This amount is high, and you should <b>consider watering your plant less often.</b> ' +
         MOISTURE_COMMON_TEXT[1]
     ]
 };
 
 var averagesLastModified = 0;
-
 
 
 /**
@@ -110,25 +128,42 @@ var averagesLastModified = 0;
  * @returns {number} The average of the array, or 0 if the array has length 0.
  */
 function average(array) {
-    if (array.length === 0) {
-        return 0;
-    }
+    var numElements = 0;
     var sum = 0;
     for (var i = 0; i < array.length; i++) {
-        sum += array[i];
+        if (array[i] !== null) {
+            numElements++;
+            sum += array[i];
+        }
     }
-    return sum / array.length;
+    return numElements === 0 ? 0 : sum / numElements;
 }
 
-function getRangeIndex(range, value) {
-    for (var i = 0; i < range.length; i++) {
-        if (value < range[i]) {
+// TODO fix this for actual times
+function getRangeIndex(ranges, value) {
+    console.log(ranges);
+    for (var i = 0; i < ranges.length; i++) {
+        if (value < ranges[i]) {
             return i;
         }
     }
-    return i + 1;
+    return ranges.length;
 }
 
+function formatCurrentValue(name, currentValue) {
+    var format = FORMATS[name];
+    if (!format) {
+        return currentValue;
+    }
+
+    var formatted = currentValue.toFixed(format.precision).toString();
+    if (format.percent) {
+        formatted += '%';
+    }
+
+    return formatted;
+
+}
 /**
  * Updates text fields and colors accounting for average values.
  * @param data
@@ -141,8 +176,10 @@ function updateText(data) {
         var max = data[i].values.max();
         var index = getRangeIndex(data[i].ranges, averageValue);
 
-        $('#' + name + '-heading').text(LABELS[index]);
-        $('#' + name + '-info').text(TEXT[name][index].format(averageValue.toFixed(), min.toFixed(), max.toFixed()));
+        $('#' + name + '-heading').text(LABELS[index])[0].className = CLASS_PREFIXES[index];
+        $('#' + name + '-info').html(TEXT[name][index].format(averageValue.toFixed(), min.toFixed(), max.toFixed()));
+        $('#' + name + '-reading')[0].className = 'element reading ' + CLASS_PREFIXES[index] + '-bg';
+        $('#' + name + '-label')[0].className = 'element reading-label ' + CLASS_PREFIXES[index];
     }
 }
 
@@ -155,7 +192,7 @@ function refreshCurrentValues() {
             var name = NAMES[i];
             var reading = '---';
             if (data.hasOwnProperty(name)) {
-                reading = data[name].toFixed(1);
+                reading = formatCurrentValue(name, data[name]);
             }
             $('#' + name + '-reading').text(reading);
         }
@@ -182,6 +219,7 @@ function refreshAverageFields(refreshFunction) {
     });
 }
 
+// add a simple format function for strings
 if (!String.prototype.format) {
     String.prototype.format = function() {
         var args = arguments;
@@ -194,10 +232,10 @@ if (!String.prototype.format) {
     };
 }
 
+// add max and min functions for arrays
 Array.prototype.max = function() {
     return Math.max.apply(null, this);
 };
-
 Array.prototype.min = function() {
     return Math.min.apply(null, this);
 };

@@ -14,35 +14,26 @@
   margin-bottom: 10px;
   border-radius: 13px;
   text-align: center;
-  background-color: #3ddb93;
-  color: #ffffff;
-  transition: all 0.5s linear;
-}
-
-.reading-bad {
-  font: 50px "Open Sans", Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  padding: 10px 10px 10px 10px;
-  margin-bottom: 10px;
-  border-radius: 13px;
-  text-align: center;
-  background-color: #db4482;
   color: #ffffff;
   transition: all 0.5s linear;
 }
 
 .reading-label {
-  color: #3ddb93;
   font: 50px "Open Sans", Helvetica, Arial, sans-serif;
   font-weight: 300;
   text-align: left;
 }
 
-.reading-label-bad {
-  color: #db4482;
-  font: 50px "Open Sans", Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  text-align: left;
+.good-bg {
+  background-color: #3ddb93;
+}
+
+.slightly-bg {
+  background-color: #f07c61;
+}
+
+.bad-bg {
+  background-color: #db4482;
 }
 
 .element {
@@ -71,11 +62,15 @@
   margin-bottom: 20px;
 }
 
-.good-highlight {
+.good {
   color: #3ddb93;
 }
 
-.bad-highlight {
+.slightly {
+  color: #f07c61;
+}
+
+.bad {
   color: #db4482;
 }
 
@@ -106,7 +101,8 @@
   color: #3ddb93;
   font: 50px "Open Sans", Helvetica, Arial, sans-serif;
   font-weight: 300;
-  margin-top: 20px;
+  padding-top: 20px;
+  margin: auto;
   text-align: center;
 }
 

@@ -1,5 +1,14 @@
 
+/**
+ * Chart colors to use at various states.
+ * @type {string[]}
+ */
+var COLORS = ['#db4482', '#f2963a', '#3ddb93', '#f2963a', '#db4482'];
 
+/**
+ * Collection of charts indexed by sensor name.
+ * @type {Chart[]}
+ */
 var charts = {};
 
 /**
@@ -30,12 +39,11 @@ function createCharts() {
     }
 }
 
-function setChartData(chart, data, label) {
-    if (label) {
-        chart.data.labels = label;
-        chart.data.datasets[0].data = data;
-        chart.update();
-    }
+function setChartData(chart, data, label, color) {
+    chart.data.labels = label;
+    chart.data.datasets[0].data = data;
+    chart.data.datasets[0].borderColor = color;
+    chart.update();
 }
 
 function createDataLabel(values) {
@@ -46,18 +54,26 @@ function createDataLabel(values) {
     return labels;
 }
 
+/**
+ * Updates each chart based on the given input data.
+ * @param data Array of sensor data.
+ */
 function updateCharts(data) {
     for (var i = 0; i < data.length; i++) {
         var name = data[i].name;
         var values = data[i].values;
-        // removeData(charts[name]);
-        // addData(charts[name], createDataLabel(values), values);
-        setChartData(charts[name], values, createDataLabel(values));
+
+        setChartData(
+            charts[name],
+            values,
+            createDataLabel(values),
+            COLORS[getRangeIndex(data[i].ranges, average(values))]
+        );
     }
 }
 
 /**
- * Period function to refresh all aspects of the display.
+ * Periodic function to refresh all aspects of the display.
  */
 function refresh() {
     refreshCurrentValues();

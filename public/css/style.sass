@@ -3,6 +3,8 @@ $main-color: #3ddb93
 $main-color-light: #e2fff3
 
 $bad-color: #db4482
+$slightly-color: #f07c61
+
 $reading-color: #ffffff
 $text-color: #898989
 
@@ -22,32 +24,22 @@ $text-color: #898989
   margin-bottom: 10px
   border-radius: 13px
   text-align: center
-  background-color: $main-color
-  color: $reading-color
-  transition: all .5s linear
-
-.reading-bad
-  font: 50px 'Open Sans', Helvetica, Arial, sans-serif
-  font-weight: 400
-  padding: 10px 10px 10px 10px
-  margin-bottom: 10px
-  border-radius: 13px
-  text-align: center
-  background-color: $bad-color
   color: $reading-color
   transition: all .5s linear
 
 .reading-label
-  color: $main-color
   font: 50px 'Open Sans', Helvetica, Arial, sans-serif
   font-weight: 300
   text-align: left
 
-.reading-label-bad
-  color: $bad-color
-  font: 50px 'Open Sans', Helvetica, Arial, sans-serif
-  font-weight: 300
-  text-align: left
+.good-bg
+  background-color: $main-color
+
+.slightly-bg
+  background-color: $slightly-color
+
+.bad-bg
+  background-color: $bad-color
 
 .element
   display: inline-block
@@ -70,10 +62,13 @@ $text-color: #898989
 .row
   margin-bottom: 20px
 
-.good-highlight
+.good
   color: $main-color
 
-.bad-highlight
+.slightly
+  color: $slightly-color
+
+.bad
   color: $bad-color
 
 #nav-buttons
@@ -98,7 +93,8 @@ $text-color: #898989
   color: $main-color
   font: 50px 'Open Sans', Helvetica, Arial, sans-serif
   font-weight: 300
-  margin-top: 20px
+  padding-top: 20px
+  margin: auto
   text-align: center
 
 
