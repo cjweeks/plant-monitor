@@ -10,14 +10,18 @@ const apiRouter = require('./routes/api');
 const app = express();
 
 app.use(logger('dev'));app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(bodyParser.urlencoded({
     extended: true
 }));
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/api', apiRouter);
-app.use('/details', (req, res, next) => {
+app.get('/details', (req, res, next) => {
     const file = __dirname + '/public/html/details.html';
+    res.sendFile(file);
+});
+app.get('/settings', (req, res, next) => {
+    const file = __dirname + '/public/html/settings.html';
     res.sendFile(file);
 });
 app.get('/', (req, res, next) => {
