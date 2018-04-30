@@ -65,87 +65,92 @@ module.exports = {
         let status = 200;
         for (const name in values) {
             if (values.hasOwnProperty(name)) {
-                const newValue = values[name];
-                // get current data to update
-                SensorDataSet.findOne(
-                    {name: name},
-                    (err, data) => {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        }
 
-                        const currentTime = Date.now();
-
-                        // if the entry already exists (usual case)
-                        if (data) {
-                            // update average
-                            const duration = currentTime - data.timeCurrentValueLastUpdated;
-                            data.accumulator = data.accumulator + duration * data.currentValue;
-
-                            // update current values
-                            data.currentValue = newValue;
-                            data.timeCurrentValueLastUpdated = currentTime;
-
-                            // if the accumulation period is over, store a new value
-                            const totalDuration = currentTime - data.timeAccumulatorStart;
-                            if (totalDuration >= data.accumulationPeriod) {
-
-                                console.log('Seconds since last update: ---------------------' +
-                                    '' + totalDuration / 1000);
-
-
-                                // correct for missed intervals (so we don't misplace a time label)
-                                for (let i = 1; i < Math.floor(totalDuration / ACCUMULATION_PERIOD); i++) {
-                                    data.values.push(null);
-                                }
-
-
-                                // calculate final average and add
-                                const average = data.accumulator / totalDuration;
-                                data.values.push(average);
-
-                                // remove oldest value if needed
-                                while (data.values.length > NUM_VALUES) {
-                                    data.values.shift();
-                                }
-
-
-                                // reset times
-                                data.accumulator = 0;
-                                data.timeValuesLastModified = currentTime;
-                                data.timeAccumulatorStart = currentTime;
-
-                                // adjust accumulation period for next cycle if we went over
-                                data.accumulationPeriod = calculateAccumulationPeriod();
+                const newValue = parseFloat(values[name]);
+                if (!isNaN(newValue)) {
+                    // get current data to update
+                    SensorDataSet.findOne(
+                        {name: name},
+                        (err, data) => {
+                            if (err) {
+                                console.log(err);
+                                return;
                             }
 
-                            // save updated document
-                            data.save(err => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            });
-                        } else {
-                            // create new entry
-                            const sensorDataSet = new SensorDataSet({
-                                name: name,
-                                currentValue: values[name],
-                                ranges: [45, 60, 75, 90],
-                                values: [],
-                                accumulationPeriod: calculateAccumulationPeriod(),
-                                accumulator: 0,
-                                timeAccumulatorStart: currentTime,
-                                timeCurrentValueLastUpdated: currentTime,
-                                timeValuesLastModified: 0
-                            });
+                            const currentTime = Date.now();
 
-                            // save to database
-                            sensorDataSet.save(err => {
-                                console.log(err);
-                            });
-                        }
-                    });
+                            // if the entry already exists (usual case)
+                            if (data) {
+                                // update average
+                                const duration = currentTime - data.timeCurrentValueLastUpdated;
+                                data.accumulator = data.accumulator + duration * data.currentValue;
+
+                                // update current values
+                                data.currentValue = newValue;
+                                data.timeCurrentValueLastUpdated = currentTime;
+
+                                // if the accumulation period is over, store a new value
+                                const totalDuration = currentTime - data.timeAccumulatorStart;
+                                if (totalDuration >= data.accumulationPeriod) {
+
+                                    console.log('Seconds since last update: ---------------------' +
+                                        '' + totalDuration / 1000);
+
+
+                                    // correct for missed intervals (so we don't misplace a time label)
+                                    for (let i = 1; i < Math.floor(totalDuration / ACCUMULATION_PERIOD); i++) {
+                                        data.values.push(null);
+                                    }
+
+
+                                    // calculate final average and add
+                                    const average = Math.round(data.accumulator / totalDuration);
+                                    data.values.push(average);
+
+                                    // remove oldest value if needed
+                                    while (data.values.length > NUM_VALUES) {
+                                        data.values.shift();
+                                    }
+
+
+                                    // reset times
+                                    data.accumulator = 0;
+                                    data.timeValuesLastModified = currentTime;
+                                    data.timeAccumulatorStart = currentTime;
+
+                                    // adjust accumulation period for next cycle if we went over
+                                    data.accumulationPeriod = calculateAccumulationPeriod();
+                                }
+
+                                // save updated document
+                                data.save(err => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                });
+                            } else {
+                                // create new entry
+                                const sensorDataSet = new SensorDataSet({
+                                    name: name,
+                                    currentValue: values[name],
+                                    ranges: [45, 60, 75, 90],
+                                    values: [],
+                                    accumulationPeriod: calculateAccumulationPeriod(),
+                                    accumulator: 0,
+                                    timeAccumulatorStart: currentTime,
+                                    timeCurrentValueLastUpdated: currentTime,
+                                    timeValuesLastModified: 0
+                                });
+
+                                // save to database
+                                sensorDataSet.save(err => {
+                                    console.log(err);
+                                });
+                            }
+                        });
+                } else {
+                    console.log('Got malformed value ' + values[name]);
+                }
             } else {
                 status = 403;
             }

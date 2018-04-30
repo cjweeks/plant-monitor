@@ -21,6 +21,7 @@ router.get('/all-data', (req, res, next) => {
 });
 
 router.post('/add-values', (req, res) => {
+    console.log(req.body);
     data.addValues(req.body, status => {
         res.sendStatus(status);
     });
