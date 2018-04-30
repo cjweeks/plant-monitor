@@ -22,7 +22,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const SensorDataSetSchema = new mongoose.Schema({
     name: String,
     currentValue: Number,
-    ranges: [Number],
+    preferredValue: Number,
     values: [Number],
     accumulationPeriod: Number,
     accumulator: {type: Number, default: 0},

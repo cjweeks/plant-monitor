@@ -28,6 +28,71 @@ module.exports = {
         });
     },
 
+    getPreferredValues: callback => {
+        SensorDataSet.find({}, 'name preferredValue', (err, entries) => {
+            if (err) {
+                console.log(err);
+            }
+            const data = {};
+            for (let i = 0; i < entries.length; i++) {
+                data[entries[i].name] = entries[i].preferredValue;
+            }
+            callback(data);
+        });
+    },
+
+    setPreferredValues: (values, callback) => {
+        let status = 200;
+        for (const name in values) {
+            if (values.hasOwnProperty(name)) {
+                const newValue = parseFloat(values[name]);
+                if (!isNaN(newValue)) {
+                    // get current data to update
+                    SensorDataSet.findOne(
+                        {name: name},
+                        (err, entry) => {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            if (entry) {
+                                entry.preferredValue = newValue;
+                                // save updated document
+                                entry.save(err => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                });
+                            } else {
+                                // create new entry
+                                const sensorDataSet = new SensorDataSet({
+                                    name: name,
+                                    currentValue: newValue,
+                                    preferredValue: newValue,
+                                    values: [],
+                                    accumulationPeriod: calculateAccumulationPeriod(),
+                                    accumulator: 0,
+                                    timeAccumulatorStart: Date.now(),
+                                    timeCurrentValueLastUpdated: Date.now(),
+                                    timeValuesLastModified: 0
+                                });
+
+                                // save to database
+                                sensorDataSet.save(err => {
+                                    console.log(err);
+                                });
+                            }
+                        });
+                } else {
+                    console.log('Got malformed value ' + values[name]);
+                }
+            } else {
+                status = 403;
+            }
+        }
+        callback(status);
+    },
+
     /**
      * Gets the time each sensor value set was last modified. Note that this
      * time applies to the graph data and NOT the current values.
@@ -132,8 +197,8 @@ module.exports = {
                                 // create new entry
                                 const sensorDataSet = new SensorDataSet({
                                     name: name,
-                                    currentValue: values[name],
-                                    ranges: [45, 60, 75, 90],
+                                    currentValue: newValue,
+                                    preferredValue: 50,
                                     values: [],
                                     accumulationPeriod: calculateAccumulationPeriod(),
                                     accumulator: 0,

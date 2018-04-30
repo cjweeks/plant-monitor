@@ -84,16 +84,16 @@
   border: 1px solid #3ddb93;
 }
 
-#nav-buttons .active {
+#nav-buttons .active, #save-btn {
   background-color: #3ddb93;
   color: white;
 }
 
-#nav-buttons .btn-nav:hover {
+#nav-buttons .btn-nav:hover, #save-btn {
   background-color: #e2fff3;
 }
 
-#nav-buttons .btn-nav.active:hover {
+#nav-buttons .btn-nav.active:hover, #save-btn {
   background-color: #3ddb93;
 }
 
@@ -108,4 +108,21 @@
 
 #start-row {
   margin-top: 55px;
+}
+
+#settings-form {
+  margin: auto;
+}
+
+.form-description {
+  color: #898989;
+  font: 20px "Open Sans", Helvetica, Arial, sans-serif;
+  text-align: justify;
+}
+
+#settings-heading {
+  color: #898989;
+  font: 25px "Open Sans", Helvetica, Arial, sans-serif;
+  margin: auto;
+  text-align: center;
 }

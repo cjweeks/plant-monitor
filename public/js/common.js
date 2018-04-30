@@ -121,7 +121,19 @@ var TEXT = {
 
 var averagesLastModified = 0;
 
-
+/**
+ * Creates an array of ranges to use when ranking a reading.
+ * @param preferredValue The preferred average value to center the range around.
+ * @return The generated array.
+ */
+function createRanges(preferredValue) {
+    return [
+        preferredValue - 8,
+        preferredValue - 5,
+        preferredValue + 5,
+        preferredValue + 8
+    ];
+}
 /**
  * Calculates the average of the given array.
  * @param array The array to average.
@@ -174,7 +186,7 @@ function updateText(data) {
         var averageValue = average(data[i].values);
         var min = data[i].values.min();
         var max = data[i].values.max();
-        var index = getRangeIndex(data[i].ranges, averageValue);
+        var index = getRangeIndex(createRanges(data[i].preferredValue), averageValue);
 
         $('#' + name + '-heading').text(LABELS[index])[0].className = CLASS_PREFIXES[index];
         $('#' + name + '-info').html(TEXT[name][index].format(averageValue.toFixed(), min.toFixed(), max.toFixed()));

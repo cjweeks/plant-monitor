@@ -67,7 +67,7 @@ function updateCharts(data) {
             charts[name],
             values,
             createDataLabel(values),
-            COLORS[getRangeIndex(data[i].ranges, average(values))]
+            COLORS[getRangeIndex(createRanges(data[i].preferredValue), average(values))]
         );
     }
 }

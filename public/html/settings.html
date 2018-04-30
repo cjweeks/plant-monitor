@@ -24,6 +24,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+
+    <!-- Client Functionality -->
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/settings.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -38,6 +42,23 @@
         </div>
     </div>
     <div class="row">
+        <div id="settings-heading">Preferred Average Values</div>
+    </div>
+    <div class="row">
+        <form id="settings-form">
+            <div class="row form-group">
+                <div class="col"><label for="temperature" class="form-description">Temperature</label></div>
+                <div class="col"><input type="number" class="form-control" id="temperature"></div>
+            </div>
+            <div class="row form-group">
+                <div class="col"><label for="light" class="form-description">Light</label></div>
+                <div class="col"><input type="number" class="form-control" id="light"></div>
+            </div>
+            <div class="row form-group">
+                <div class="col"><label for="moisture" class="form-description">Moisture</label></div>
+                <div class="col"><input type="number" class="form-control" id="moisture"></div>
+            </div>
+        </form>
     </div>
 </div>
 </body>
