@@ -3,8 +3,15 @@ const SensorDataSet = require('./mongo');
 
 const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
-const ACCUMULATION_PERIOD = 5000; //SECONDS_IN_MINUTE * MINUTES_IN_HOUR * 1000;
+const ACCUMULATION_PERIOD = SECONDS_IN_MINUTE * MINUTES_IN_HOUR * 1000;
 const NUM_VALUES = 24;
+
+
+const PRECISIONS = {
+    temperature: 1,
+    light: 0,
+    moisture: 0
+};
 
 function calculateAccumulationPeriod() {
     return ACCUMULATION_PERIOD - (Date.now() % ACCUMULATION_PERIOD);
@@ -172,7 +179,7 @@ module.exports = {
 
 
                                     // calculate final average and add
-                                    const average = Math.round(data.accumulator / totalDuration);
+                                    const average = (data.accumulator / totalDuration).toFixed(PRECISIONS[name]);
                                     data.values.push(average);
 
                                     // remove oldest value if needed
