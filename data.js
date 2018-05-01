@@ -20,9 +20,12 @@ module.exports = {
             if (err) {
                 console.log(err);
             }
+
             const data = {};
-            for (let i = 0; i < entries.length; i++) {
-                data[entries[i].name] = entries[i].currentValue;
+            if (entries) {
+                for (let i = 0; i < entries.length; i++) {
+                    data[entries[i].name] = entries[i].currentValue;
+                }
             }
             callback(data);
         });

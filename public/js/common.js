@@ -128,10 +128,10 @@ var averagesLastModified = 0;
  */
 function createRanges(preferredValue) {
     return [
-        preferredValue - 8,
+        preferredValue - 10,
         preferredValue - 5,
         preferredValue + 5,
-        preferredValue + 8
+        preferredValue + 10
     ];
 }
 /**
