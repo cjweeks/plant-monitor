@@ -45,7 +45,7 @@ var MOISTURE_COMMON_TEXT = [
     'The minimum and maximum moisture values in the past 24 hours were <b>{1}%</b> and <b>{2}%</b>, respectively.'
 ];
 
-var LABELS = ['Low', 'Slightly Low', 'Good', 'Slightly High'];
+var LABELS = ['Low', 'Slightly Low', 'Good', 'Slightly High', 'High'];
 
 var TEXT = {
     temperature: [
